@@ -347,7 +347,13 @@ main {
     top: 3rem;
     width: 3rem;
     height: 3rem;
+
 }
+
+.cerrar-modal:hover{
+    cursor: pointer;
+}
+
 .modal .cerrar-modal img {
     width: 100%;
 }

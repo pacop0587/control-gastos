@@ -2,6 +2,7 @@ import BtnCerrar from '../img/cerrar.svg'
 
 const Modal = ({setModal}) => {
 
+    //Funcion para cerrar modal
     const handleCerrar = () =>{
         setModal(false);
     }
