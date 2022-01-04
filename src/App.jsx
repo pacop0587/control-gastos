@@ -8,10 +8,15 @@ function App() {
 	const [presupuesto, setPresupuesto] = useState(0);
 	const [isValidPresupuesto, setIsValidPresupuesto] = useState(false);
 	const [modal, setModal] = useState(false);
+	const [animarModal, setAnimarModal] = useState(false)
 
-	//Funcion que muestra modal al dar click al icono
+	//Funcion que muestra modal y da animacion al dar click al icono
 	const handleModal = () =>{
 		setModal(true)
+
+		setTimeout( () =>{
+			setAnimarModal(true)
+		}, 500)
 	}
 
   return (
@@ -30,7 +35,11 @@ function App() {
 					onClick={handleModal} />
 				</div>
 			)}
-			{modal && <Modal setModal={setModal}/>}
+			{modal && <Modal 
+						setModal={setModal}
+						animarModal={animarModal}
+						setAnimarModal = {setAnimarModal}
+						/>}
 	  </div>
 
   )
