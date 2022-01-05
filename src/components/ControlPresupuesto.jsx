@@ -1,6 +1,16 @@
-import React from 'react'
+import { useState,useEffect } from "react"
 
-const ControlPresupuesto = ({presupuesto}) => {
+const ControlPresupuesto = ({presupuesto, gastos}) => {
+    //Hooks state
+    const [disponible, setDisponible] = useState(0);
+    const [gastado, setGastado] = useState(0);
+
+    useEffect(() => {
+        const totalGastos = gastos.reduce((total, gasto) => 
+            gasto.cantidad + total, 0
+        )
+        setGastado(totalGastos);
+    }, [gastos])
     
     //Dar formato de moneda a cantidad del presupuesto
     const formatoCantidad = (cantidad) => {
@@ -20,10 +30,10 @@ const ControlPresupuesto = ({presupuesto}) => {
                     <span>Presupuesto: </span> {formatoCantidad(presupuesto)}
                 </p>
                 <p>
-                    <span>Disponible: </span> {formatoCantidad(0)}
+                    <span>Disponible: </span> {formatoCantidad(disponible)}
                 </p>
                 <p>
-                    <span>Gastado: </span> {formatoCantidad(0)}
+                    <span>Gastado: </span> {formatoCantidad(gastado)}
                 </p>
             </div>
             
