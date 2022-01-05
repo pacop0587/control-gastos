@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Mensaje from './Mensaje';
 import BtnCerrar from '../img/cerrar.svg'
 
-const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar}) => {
+const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar, setGastoEditar}) => {
     //Hooks state
     const [nombre, setNombre] = useState('');
     const [cantidad, setCantidad] = useState(0);
@@ -25,6 +25,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar
     //Funcion para cerrar modal y la animacion del modal
     const handleCerrar = () =>{
         setAnimarModal(false);
+        setGastoEditar({})
 
         setTimeout(() => {
             setModal(false);
