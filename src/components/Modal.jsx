@@ -1,13 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Mensaje from './Mensaje';
 import BtnCerrar from '../img/cerrar.svg'
 
-const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
+const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar}) => {
     //Hooks state
     const [nombre, setNombre] = useState('');
     const [cantidad, setCantidad] = useState(0);
     const [categoria, setCategoria] = useState('');
     const [mensaje, setMensaje] = useState('');
+    const [id, setId] = useState('')
+    const [fecha, setFecha] = useState('')
+ 
+    //Llena los campos del formulario para editar
+    useEffect(() => {
+        if(Object.keys(gastoEditar).length> 0){
+			setNombre(gastoEditar.nombre)
+            setCantidad(gastoEditar.cantidad)
+            setCategoria(gastoEditar.categoria)
+            setId(gastoEditar.id)
+            setFecha(gastoEditar.fecha)
+		}
+    }, [])
 
     //Funcion para cerrar modal y la animacion del modal
     const handleCerrar = () =>{
@@ -31,7 +44,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
             return
         }
 
-        guardarGasto({nombre, cantidad, categoria});
+        guardarGasto({nombre, cantidad, categoria, id, fecha});
     }
 
     return (
@@ -45,7 +58,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
             <form 
                 className={`formulario ${animarModal ? "animar" : 'cerrar'}`}
                 onSubmit={handleSubmit} >
-                <legend>Nuevo Gasto</legend>
+                <legend>{gastoEditar.nombre ? 'Editar Gasto' : 'Nuevo Gasto'}</legend>
                 {mensaje && <Mensaje tipo="error">{mensaje}</Mensaje>}
                 <div className='campo'>
                     <label htmlFor="nombre">Nombre Gasto</label>
@@ -81,7 +94,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
                         <option value="suscripciones">Suscripciones</option>
                     </select>
                 </div>
-                <input type="submit" value="Añadir Gasto" />
+                <input type="submit" value={gastoEditar.nombre ? 'Guardar Cambios' : 'Añadir Gasto'} />
             </form>
         </div>
     )

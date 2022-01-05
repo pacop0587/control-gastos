@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import IconoNuevoGasto from './img/nuevo-gasto.svg'
 import Modal from './components/Modal';
@@ -12,10 +12,22 @@ function App() {
 	const [modal, setModal] = useState(false);
 	const [animarModal, setAnimarModal] = useState(false)
 	const [gastos, setGastos] = useState([]);
+	const [gastoEditar, setGastoEditar] = useState({})
 
-	//Funcion que muestra modal y da animacion al dar click al icono
+	useEffect(() => {
+		if(Object.keys(gastoEditar).length> 0){
+			setModal(true)
+	
+			setTimeout( () =>{
+				setAnimarModal(true)
+			}, 500)
+		}
+	}, [gastoEditar])
+
+	//Funcion para agregar nuevo registro
 	const handleModal = () =>{
 		setModal(true)
+		setGastoEditar({})
 
 		setTimeout( () =>{
 			setAnimarModal(true)
@@ -24,14 +36,24 @@ function App() {
 
 	//Funcion para guadar el gasto
 	const guardarGasto = (gasto) =>{
-		gasto.id = nanoid();
-		gasto.fecha = Date.now();
-		setGastos([...gastos, gasto]);
+		if(gasto.id){
+			const gastosActualizados = gastos.map( gastoState => gastoState.id === gasto.id ? gasto : gastoState)
+			setGastos(gastosActualizados);
+		}else{
+			gasto.id = nanoid();
+			gasto.fecha = Date.now();
+			setGastos([...gastos, gasto]);
+		}
 
 		setAnimarModal(false);
         setTimeout(() => {
             setModal(false);
         }, 500);
+	}
+
+	const eliminarGasto = id =>{
+		const gastosActualizados = gastos.filter( gasto => gasto.id !== id);
+		setGastos(gastosActualizados);
 	}
 
   return (
@@ -48,6 +70,8 @@ function App() {
 					<main>
 						<ListadoGastos
 							gastos = {gastos}
+							setGastoEditar = {setGastoEditar}
+							eliminarGasto = {eliminarGasto}
 						/>
 					</main>
 					<div className='nuevo-gasto'>
@@ -63,6 +87,7 @@ function App() {
 						animarModal={animarModal}
 						setAnimarModal = {setAnimarModal}
 						guardarGasto = {guardarGasto}
+						gastoEditar = {gastoEditar}
 						/>}
 	  </div>
 
